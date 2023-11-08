@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import urllib.request, json
 
 app = Flask(__name__)
 
@@ -8,4 +9,10 @@ def hello_world():
 
 @app.route("/user")
 def user():
-    return render_template('user.html')
+    url = "https://api.foldingathome.org/user-count"
+
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    dict = json.loads(data)
+
+    return render_template('user.html', response='response')
