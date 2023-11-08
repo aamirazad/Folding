@@ -1,0 +1,17 @@
+ports:
+  - port: 5173
+    onOpen: open-preview
+
+tasks:
+  - init: . .venv/bin/activate && pip install Flask
+
+vscode:
+  extensions:
+    - svelte.svelte-vscode
+    - eamodio.gitlens
+    - ms-python.python
+    - bradlc.vscode-tailwindcss
+    - WakaTime.vscode-wakatime
+    - formulahendry.auto-rename-tag
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
