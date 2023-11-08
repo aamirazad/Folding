@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    export let data;
+    let username;
+</script>
+<label for="username">Username:</label>
+<input type="text" id="username" name="username" bind:value={username}/>
+<a href="/@/{username}">User data</a>
+<p>{data.user_count}</p>
