@@ -1,18 +1,15 @@
-from flask import Flask, render_template
-import urllib.request, json
+from flask import Flask, render_template, request
+from helpers import lookup
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return render_template("index.html")
 
-@app.route("/user")
+@app.route("/user", methods=["GET", "POST"])
 def user():
-    url = "https://api.foldingathome.org/user-count"
-
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    dict = json.loads(data)
-
-    return render_template('user.html', response='response')
+    if request.method == 'POST':
+        return TODO
+    else:
+        return render_template("user.html")

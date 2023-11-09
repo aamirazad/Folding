@@ -1,2 +1,3 @@
 def lookup(slug):
-    return;
+    url = f"https://api.foldingathome.org/{(symbol)}"
+    print(url)
