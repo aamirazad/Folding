@@ -9,9 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    logging.info("enter getJSONReuslt")
     user_data = lookup_user("AamirA")
-    logging.info(user_data)
     return render_template("index.html", user_data=user_data)
 
 @app.route("/user", methods=["GET", "POST"])
