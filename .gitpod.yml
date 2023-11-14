@@ -1,9 +1,9 @@
 ports:
-  - port: 5173
+  - port: 5000
     onOpen: open-preview
 
 tasks:
-  - init: npm install -g bun && bun install --cwd /workspace/folding/
+  - init: echo ". .venv/bin/activate && pip install Flask"
 
 vscode:
   extensions:

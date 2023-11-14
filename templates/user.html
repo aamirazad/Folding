@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    User
+{% endblock %}
+
+{% block script %}
+
+	// mousewheel or two-finger scroll zooms the plot
+
+	var trace1 = {
+		x:['2020-10-04', '2021-11-04', '2023-12-04'],
+		y: [90, 40, 60],
+		type: 'scatter'
+	};
+
+	var data = [trace1];
+
+	var layout = {
+		title: 'Scroll and Zoom',
+		showlegend: false
+	};
+
+	Plotly.newPlot('myDiv', data, layout, {scrollZoom: true,displayModeBar: false});
+
+
+{% endblock %}
+
+{% block main %}
+	<form action="/user" method="POST">
+		<input type="text" id="user" name="user">
+		<button type="submit">Lookup</button>
+	</form>
+	<div id="myDiv" style="width:600px;height:250px;"></div>
+{% endblock %}
