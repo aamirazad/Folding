@@ -8,6 +8,9 @@
 
     <p id="test"></p>
 	<div id="user_graph" style="width:600px;height:250px;"></div>
+	{% for post in posts %}
+		<p>{{ post['score'] }}</p>
+	{% endfor %}
 
 	<script>
 		// Plotly graph: https://plotly.com/javascript/
