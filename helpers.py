@@ -11,8 +11,8 @@ def lookup_user(user):
                 f"https://api.foldingathome.org/search/user?query={user}"
             )
 
-            user_data = (requests.get(url)).json()
-            user_id = user_data[0]["id"]
+            user_stats = (requests.get(url)).json()
+            user_id = user_stats[0]["id"]
         
         else:
             user_id = user
@@ -20,8 +20,8 @@ def lookup_user(user):
         url = (
             f"https://api.foldingathome.org/uid/{user_id}"
         )
-        user_info = requests.get(url).json()
-        return user_info
+        user_data = requests.get(url).json()
+        return user_data
 
     except (requests.RequestException, ValueError, KeyError, IndexError):
         return None

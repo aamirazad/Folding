@@ -27,5 +27,9 @@
 {% endblock %}
 
 {% block main %}
-<div id="myDiv" style="width:600px;height:250px;"></div>
+	<form action="/user" method="POST">
+		<input type="text" id="user" name="user">
+		<button type="submit">Lookup</button>
+	</form>
+	<div id="myDiv" style="width:600px;height:250px;"></div>
 {% endblock %}
