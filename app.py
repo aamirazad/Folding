@@ -1,11 +1,18 @@
 from flask import Flask, render_template, request
-from helpers import lookup
+from helpers import lookup_user
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
-    return render_template("index.html")
+def index():
+    logging.info("enter getJSONReuslt")
+    user_data = lookup_user("AamirA")
+    logging.info(user_data)
+    return render_template("index.html", user_data=user_data)
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
