@@ -22,10 +22,12 @@ def user():
     if request.method == 'POST':
         user = request.form.get("user")
         user_data = lookup_user(user)
+        logging.info(user_data)
         conn = get_db_connection()
-        posts = conn.execute('SELECT * FROM user').fetchall()
+        conn.execute('INSERT INTO user (score) VALUES (?)', user_data[0]['score'])
+        data = conn.execute('SELECT * FROM user').fetchall()
         conn.close()
-        return render_template("/stats/user.html", posts=posts)
+        return render_template("/stats/user.html", data=data)
     else:
         return render_template("user.html")
 
