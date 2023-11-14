@@ -3,7 +3,7 @@ ports:
     onOpen: open-preview
 
 tasks:
-  - init: ". .venv/bin/activate && pip install Flask"
+  - init: "cd /workspace/folding && python3 -m venv .venv && . .venv/bin/activate && pip install Flask"
 
 vscode:
   extensions:
