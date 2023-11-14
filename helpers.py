@@ -1,3 +1,4 @@
+import simplejson as json
 import requests
 
 def lookup_user(user):

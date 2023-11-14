@@ -20,15 +20,19 @@ def index():
 @app.route("/user", methods=["GET", "POST"])
 def user():
     if request.method == 'POST':
+        # Lookup username submitted though the form
         user = request.form.get("user")
         user_data = lookup_user(user)
-        logging.info(user_data)
+        # Check to make sure that user exists
+        if not user_data:
+            return render_template("error.html")
         conn = get_db_connection()
         conn.execute('INSERT INTO user (score) VALUES (?)', user_data[0]['score'])
         data = conn.execute('SELECT * FROM user').fetchall()
         conn.close()
         return render_template("/stats/user.html", data=data)
     else:
+        # Render the username input form
         return render_template("user.html")
 
 
