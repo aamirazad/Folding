@@ -23,11 +23,12 @@ def user():
         # Lookup username submitted though the form
         user = request.form.get("user")
         user_data = lookup_user(user)
+        logging.debug(user_data)
         # Check to make sure that user exists
         if not user_data:
             return render_template("error.html")
         conn = get_db_connection()
-        conn.execute('INSERT INTO user (score) VALUES (?)', user_data[0]['score'])
+        conn.execute('INSERT INTO user (score) VALUES (?)', (user_data['score'],))
         data = conn.execute('SELECT * FROM user').fetchall()
         conn.close()
         return render_template("/stats/user.html", data=data)
@@ -35,7 +36,3 @@ def user():
         # Render the username input form
         return render_template("user.html")
 
-
-@app.route("/back/user", methods=["POST"])
-def back_user():
-    return 
