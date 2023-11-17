@@ -4,39 +4,41 @@
     Stats -> User
 {% endblock %}
 
+{% block head %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    datasets: [{
+      data: {{ database | safe }}
+    }]
+  },
+  options: {
+    parsing: {
+      xAxisKey: 'date',
+      yAxisKey: 'score'
+    }
+  }
+});
+
+
+
+</script>
+{% endblock %}
+
 {% block main %}
 
-    <p id="test"></p>
-	<div id="user_graph" style="width:600px;height:250px;"></div>
-	{% for post in posts %}
-		<p>{{ post['score'] }}</p>
-	{% endfor %}
-
-	<script>
-		// Plotly graph: https://plotly.com/javascript/
-		// mousewheel or two-finger scroll zooms the plot
-
-		var plotly_example = {
-			x:['2020-10-04', '2021-11-04', '2023-12-04'],
-			y: [90, 40, 60],
-			type: 'scatter'
-		};
-
-		var database_data = {
-			x: {{ database_dict }},
-			y: {{ scores }},
-			type: 'scatter'
-		}
-
-		var data = [database_data];
-
-		var layout = {
-			title: 'Scroll and Zoom',
-			showlegend: false
-		};
-
-		Plotly.newPlot('user_graph', data, layout, {scrollZoom: true,displayModeBar: false});
-
-		alert(x);
-	</script>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    
 {% endblock %}

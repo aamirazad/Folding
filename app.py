@@ -35,22 +35,13 @@ def user():
             return render_template("error.html")
         # Add the user's score to the database
         conn = get_db()
-        # conn.execute('INSERT INTO user (score) VALUES (?)', (user_data["score"],))
-        # conn.commit()
-        database = conn.execute('SELECT * FROM user').fetchall()
-        database_dict = [dict(row) for row in database]
-        scores = [post['score'] for post in database_dict]
+        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+        conn.commit()
         conn.close()
-
-        return render_template("/stats/user.html", database=database_dict, scores=scores)
+        database = query_db('SELECT * FROM user WHERE user_id = ?', (user,))
+        database_dict = [dict(row) for row in database]
+        return render_template("/stats/user.html", database=database_dict)
     else:
         database = query_db('SELECT * FROM user')
         # Render the username input form
         return render_template("user.html", database=database)
-
-@app.route("/graph_test")
-def graph_test():
-    database = query_db('SELECT * FROM user')
-    database_dict = [dict(row) for row in database]
-    logging.debug(database_dict)
-    return render_template("graph_test.html", database=database_dict)
