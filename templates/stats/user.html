@@ -22,8 +22,13 @@
 			type: 'scatter'
 		};
 
+		var database_data = {
+			x: {{ database_dict }},
+			y: {{ scores }},
+			type: 'scatter'
+		}
 
-		var data = [plotly_example];
+		var data = [database_data];
 
 		var layout = {
 			title: 'Scroll and Zoom',

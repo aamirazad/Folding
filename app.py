@@ -2,16 +2,26 @@ from flask import Flask, render_template, request
 from helpers import lookup_user
 import logging
 import sqlite3
+import pandas as pd
+import json
+import plotly
+import plotly.express as px
 
 logging.basicConfig(level=logging.DEBUG)
 
 
 app = Flask(__name__)
 
-def get_db_connection():
+def get_db():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+def query_db(query, args=(), one=False):
+    cur = get_db().execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    return (rv[0] if rv else None) if one else rv
 
 @app.route("/")
 def index():
@@ -27,15 +37,29 @@ def user():
         if not user_data:
             return render_template("error.html")
         # Add the user's score to the database
-        conn = get_db_connection()
-        try:
-            conn.execute('INSERT INTO user (score) VALUES (?)', (user_data["score"],))
-            conn.commit()
-            data = conn.execute('SELECT * FROM user').fetchall()
-        finally:
-            conn.close()
-        return render_template("/stats/user.html", data=data)
-    else:
-        # Render the username input form
-        return render_template("user.html")
+        conn = get_db()
+        # conn.execute('INSERT INTO user (score) VALUES (?)', (user_data["score"],))
+        # conn.commit()
+        database = conn.execute('SELECT * FROM user').fetchall()
+        database_dict = [dict(row) for row in database]
+        scores = [post['score'] for post in database_dict]
+        conn.close()
 
+        return render_template("/stats/user.html", database=database_dict, scores=scores)
+    else:
+        database = query_db('SELECT * FROM user')
+        # Render the username input form
+        return render_template("user.html", database=database)
+
+@app.route("/graph_test")
+def graph_test():
+    df = pd.DataFrame({
+        'Fruit': ['Apples', 'Oranges', 'Bananas', 'Apples', 'Oranges', 'Bananas'],
+        'Amount': [4, 1, 2, 2, 4, 5],
+        'City': ['SF', 'SF', 'SF', 'Montreal', 'Montreal', 'Montreal']
+    })
+    fig = px.bar(df, x='Fruit', y='Amount', color='City', barmode='group')
+
+    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
+    logging.debug(graphJSON)
+    return render_template('graph_test.html', graphJSON=graphJSON)

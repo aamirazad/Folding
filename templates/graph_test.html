@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Graph
+{% endblock %}
+
+{% block script %}
+
+    var graphs = {
+        'graph1': {{ graph1 | safe }};
+    };
+    Plotly.plot('chart',graphs,{});
+
+{% endblock %}
+
+{% block main %}
+
+    <div id='chart' class="chart"></div>
+
+{% endblock %}

@@ -6,23 +6,14 @@
 
 {% block script %}
 
-	// mousewheel or two-finger scroll zooms the plot
+	TESTER = document.getElementById('tester');
+	Plotly.newPlot( TESTER, [{
+	x: {{ database[0] }},
+	y: [1, 2, 4, 8, 16] }], {
+	margin: { t: 0 } } );	
 
-	var trace1 = {
-		x:['2020-10-04', '2021-11-04', '2023-12-04'],
-		y: [90, 40, 60],
-		type: 'scatter'
-	};
-
-	var data = [trace1];
-
-	var layout = {
-		title: 'Scroll and Zoom',
-		showlegend: false
-	};
-
-	Plotly.newPlot('myDiv', data, layout, {scrollZoom: true,displayModeBar: false});
-
+	
+	alert("{{ database[2]['date'] }}");
 
 {% endblock %}
 
@@ -31,5 +22,5 @@
 		<input type="text" id="user" name="user">
 		<button type="submit">Lookup</button>
 	</form>
-	<div id="myDiv" style="width:600px;height:250px;"></div>
+	<div id="tester" style="width:600px;height:250px;"></div>
 {% endblock %}
