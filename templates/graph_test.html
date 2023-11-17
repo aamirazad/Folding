@@ -4,12 +4,14 @@
     Graph
 {% endblock %}
 
+{% block head %}
+
+
+{% endblock %}
+
 {% block script %}
 
-    var graphs = {
-        'graph1': {{ graph1 | safe }};
-    };
-    Plotly.plot('chart',graphs,{});
+
 
 {% endblock %}
 

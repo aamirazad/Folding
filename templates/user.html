@@ -6,14 +6,6 @@
 
 {% block script %}
 
-	TESTER = document.getElementById('tester');
-	Plotly.newPlot( TESTER, [{
-	x: {{ database[0] }},
-	y: [1, 2, 4, 8, 16] }], {
-	margin: { t: 0 } } );	
-
-	
-	alert("{{ database[2]['date'] }}");
 
 {% endblock %}
 
