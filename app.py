@@ -51,4 +51,6 @@ def user():
 @app.route("/graph_test")
 def graph_test():
     database = query_db('SELECT * FROM user')
-    return render_template("graph_test.html", database=database)
+    database_dict = [dict(row) for row in database]
+    logging.debug(database_dict)
+    return render_template("graph_test.html", database=database_dict)
