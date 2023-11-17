@@ -6,39 +6,39 @@
 
 {% block head %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}
 
 {% block script %}
-<script>
+  <script>
 
-const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById('userChart');
 
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    datasets: [{
-      data: {{ database | safe }}
-    }]
-  },
-  options: {
-    parsing: {
-      xAxisKey: 'date',
-      yAxisKey: 'score'
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: {{ database | safe }}
+      }]
+    },
+    options: {
+      parsing: {
+        xAxisKey: 'date',
+        yAxisKey: 'score'
+      }
     }
-  }
-});
+  });
 
+  alert("{{ database | safe }}");
+  </script>
 
-
-</script>
 {% endblock %}
 
 {% block main %}
 
-    <div>
-        <canvas id="myChart"></canvas>
-    </div>
+  <div>
+    <canvas id="userChart"></canvas>
+  </div>
     
 {% endblock %}

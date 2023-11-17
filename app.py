@@ -35,10 +35,10 @@ def user():
             return render_template("error.html")
         # Add the user's score to the database
         conn = get_db()
-        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+        #conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
         conn.commit()
         conn.close()
-        database = query_db('SELECT * FROM user WHERE user_id = ?', (user,))
+        database = query_db('SELECT * FROM user WHERE user_id = ?', [user_data["id"]])
         database_dict = [dict(row) for row in database]
         return render_template("/stats/user.html", database=database_dict)
     else:
