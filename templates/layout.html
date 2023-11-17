@@ -15,9 +15,8 @@
         <link href="/static/favicon.ico" rel="icon">
 
         <link href="/static/css/styles.css" rel="stylesheet">
-        <!-- https://plotly.com/javascript/  -->
-        <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
-        <script src="plotly-2.27.0.min.js" charset="utf-8"></script>
+
+        {% block head %}{% endblock %}
         
         <title>folding.aamira -> {% block title %}{% endblock %}</title>
 
@@ -50,10 +49,8 @@
             <p>CS50 Project</p>
             <a href="https://gitlab.com/aamirazad/folding">Credits</a>
         </footer>
-
-        <script>
-            {% block script %}{% endblock %}
-        </script>
+        
+        {% block script %}{% endblock %}
     </body>
 
 </html>

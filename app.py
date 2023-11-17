@@ -2,10 +2,7 @@ from flask import Flask, render_template, request
 from helpers import lookup_user
 import logging
 import sqlite3
-import pandas as pd
-import json
-import plotly
-import plotly.express as px
+
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -53,13 +50,7 @@ def user():
 
 @app.route("/graph_test")
 def graph_test():
-    df = pd.DataFrame({
-        'Fruit': ['Apples', 'Oranges', 'Bananas', 'Apples', 'Oranges', 'Bananas'],
-        'Amount': [4, 1, 2, 2, 4, 5],
-        'City': ['SF', 'SF', 'SF', 'Montreal', 'Montreal', 'Montreal']
-    })
-    fig = px.bar(df, x='Fruit', y='Amount', color='City', barmode='group')
-
-    graphJSON = json.dumps(fig,cls=plotly.utils.PlotlyJSONEncoder)
-    logging.debug(graphJSON)
-    return render_template('graph_test.html', graphJSON=graphJSON)
+    database = query_db('SELECT * FROM user')
+    database_dict = [dict(row) for row in database]
+    logging.debug(database_dict)
+    return render_template("graph_test.html", database=database_dict)
