@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Team
+{% endblock %}
+
+{% block head %}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% endblock %}
+
+{% block script %}
+  <script>
+
+  const ctx = document.getElementById('teamChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: {{ database | safe }}
+      }]
+    },
+    options: {
+      parsing: {
+        xAxisKey: 'date',
+        yAxisKey: 'score'
+      }
+    }
+  });
+
+  </script>
+{% endblock %}
+
+{% block main %}
+	<form action="/team">
+		<input type="text" id="q" name="q">
+		<button type="submit">Lookup</button>
+	</form>
+	<hr>
+	<div>
+		<canvas id="teamChart"></canvas>
+	</div>
+{% endblock %}
