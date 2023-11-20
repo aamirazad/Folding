@@ -33,10 +33,9 @@ def lookup_user(user):
             f"https://api.foldingathome.org/uid/{user_id}"
         )
         user_data = requests.get(url).json()
-
+    # If a web error happens
     except:
         return None
-    
     # Check to make sure that user exists
     if not user_data:
         return None
@@ -45,6 +44,7 @@ def lookup_user(user):
     conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
     conn.commit()
     conn.close()
+    # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = ?', [user_data["id"]])
     database_dict = [dict(row) for row in database]
     # Render the username input form
