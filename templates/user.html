@@ -4,15 +4,42 @@
     User
 {% endblock %}
 
-{% block script %}
+{% block head %}
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}
 
+{% block script %}
+  <script>
+
+  const ctx = document.getElementById('userChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: {{ database | safe }}
+      }]
+    },
+    options: {
+      parsing: {
+        xAxisKey: 'date',
+        yAxisKey: 'score'
+      }
+    }
+  });
+
+  </script>
+{% endblock %}
+
 {% block main %}
-	<form action="/user" method="POST">
-		<input type="text" id="user" name="user">
+	<form action="/user">
+		<input type="text" id="q" name="q">
 		<button type="submit">Lookup</button>
 	</form>
-	<div id="tester" style="width:600px;height:250px;"></div>
+	<hr>
+	<div>
+		<canvas id="userChart"></canvas>
+	</div>
 {% endblock %}
