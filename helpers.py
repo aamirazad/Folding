@@ -20,7 +20,7 @@ def query_api(args):
     )
     return requests.get(url).json()
 
-def lookup_user(user):
+def lookup_user(user, save):
     """Lookup user's states"""
     # Make sure an argument was given
     if user is None:
@@ -40,11 +40,12 @@ def lookup_user(user):
     # Check to make sure that user exists
     if not user_data:
         return None
-    # Add the user's score to the database
-    conn = get_db()
-    # conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
-    conn.commit()
-    conn.close()
+    # Add the user's score to the database if told to save
+    if save == 'checked':
+        conn = get_db()
+        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+        conn.commit()
+        conn.close()
     # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = ?', [user_data["id"]])
     database_dict = [dict(row) for row in database]

@@ -70,7 +70,9 @@
 
 {% block main %}
     <form action="/user">
-        <input type="text" id="q" name="q">
+        <input type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
+        <input type="checkbox" id="save" name="save" {{ save }}>
+        <label for="save">Save data?</label>
         <button type="submit">Lookup</button>
     </form>
     <hr>
