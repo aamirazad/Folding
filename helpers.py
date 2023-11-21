@@ -13,27 +13,28 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+# Base api handling
+def query_api(args):
+    url = (
+        f"https://api.foldingathome.org{args}"
+    )
+    return requests.get(url).json()
+
 def lookup_user(user):
     """Lookup user's states"""
     # Make sure an argument was given
     if user is None:
         return None
-    # Change username to id, then get data
     try:
+        # Change to id if id is not given
         if not user.isnumeric():
-            url = (
-                f"https://api.foldingathome.org/search/user?query={user}"
-            )
-
-            user_stats = (requests.get(url)).json()
+            user_stats = query_api(f"/search/user?query={user}")
             user_id = user_stats[0]["id"]
         else:
             user_id = user
-        url = (
-            f"https://api.foldingathome.org/uid/{user_id}"
-        )
-        user_data = requests.get(url).json()
-    # If a web error happens
+        # Get user data
+        user_data = query_api(f"/uid/{user_id}")
+    # If a web error happens return None
     except:
         return None
     # Check to make sure that user exists
@@ -41,7 +42,7 @@ def lookup_user(user):
         return None
     # Add the user's score to the database
     conn = get_db()
-    conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+    # conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
     conn.commit()
     conn.close()
     # Query the database for the user
