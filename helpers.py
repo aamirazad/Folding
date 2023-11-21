@@ -13,6 +13,7 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+
 def lookup_user(user):
     """Lookup user's states"""
     # Make sure an argument was given
@@ -41,7 +42,7 @@ def lookup_user(user):
         return None
     # Add the user's score to the database
     conn = get_db()
-    conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+    # conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
     conn.commit()
     conn.close()
     # Query the database for the user
