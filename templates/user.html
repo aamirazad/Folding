@@ -8,6 +8,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  
 
 {% endblock %}
 
@@ -19,35 +22,28 @@
   new Chart(ctx, {
     type: 'line',
     label: 'Points',
+
     data: {
       datasets: [{
         data: {{ database | safe }}
       }]
     },
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          // Luxon format string
-          tooltipFormat: 'DD T'
-        },
-        title: {
-          display: true,
-          text: 'Date'
+
+    options: {
+      scales: {
+        x: {
+          time: 'time',
+          title: {
+            display: true,
+            text: 'Date'
+          }
         }
       },
-      y: {
-        title: {
-          display: true,
-          text: 'value'
-        }
-      }
-    },
-    options: {
       parsing: {
         xAxisKey: 'date',
         yAxisKey: 'score'
-      }
+      },
+
     }
   });
 

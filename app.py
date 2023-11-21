@@ -12,9 +12,11 @@ def index():
 
 @app.route("/user")
 def user():
-    if not request.args.get("q"):
+    q = request.args.get("q")
+    if not q:
         return render_template("user.html")
-    database_dict = lookup_user(request.args.get("q"))
+    database_dict = lookup_user(q)
     if database_dict is None:
         return render_template("error.html")
-    return render_template("user.html", database=database_dict)
+    logging.debug(database_dict)
+    return render_template("user.html", database=database_dict, arg=q)
