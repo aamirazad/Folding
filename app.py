@@ -18,5 +18,4 @@ def user():
     database_dict = lookup_user(q)
     if database_dict is None:
         return render_template("error.html")
-    logging.debug(database_dict)
     return render_template("user.html", database=database_dict, arg=q)
