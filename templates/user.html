@@ -30,12 +30,33 @@
     },
 
     options: {
+      plugins: {
+        title: {
+          text: "Total User's Points",
+          display: true
+        },
+        legend: {
+          display: false
+        }
+      },
       scales: {
         x: {
+          text: "Date",
           type: 'time',
           title: {
             display: true,
             text: 'Date'
+          },
+          time: {
+            displayFormats: {
+              quarter: 'day'
+            }
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Points'
           }
         }
       },
@@ -51,12 +72,12 @@
 {% endblock %}
 
 {% block main %}
-	<form action="/user">
-		<input type="text" id="q" name="q">
-		<button type="submit">Lookup</button>
-	</form>
-	<hr>
-	<div>
-		<canvas id="userChart"></canvas>
-	</div>
+    <form action="/user">
+        <input type="text" id="q" name="q">
+        <button type="submit">Lookup</button>
+    </form>
+    <hr>
+    <div>
+        <canvas id="userChart"></canvas>
+    </div>
 {% endblock %}
