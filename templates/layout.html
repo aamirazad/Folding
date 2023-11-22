@@ -21,8 +21,8 @@
 
     </head>
 
-<body class="min-h-screen bg-gradient-to-b from-blue-950 to-[#191724] h-screen justify-between">
-
+<body class="min-h-screen h-screen justify-between">
+    <div class="sticky top-0 left-0 w-full min-h-screen bg-gradient-to-b from-blue-950 to-[#191724]">
         <nav class="">
             <div class="container mx-auto px-6 py-2 flex justify-between items-center">
                 <div class="block lg:hidden">
@@ -36,9 +36,9 @@
                 <a style="font-family: 'Cabin'" class="font-bold text-xl lg:text-4xl text-teal-500" href="/">folding.aamira</span></a>
                 <div class="hidden lg:flex flex-wrap items-center" id="navbar">
                     <ul class="flex flex-wrap">
-                        <li><a class="px-1 py-1 hover:bg-[#31748f] duration-300 mr-1 rounded-lg font-bold" href="/">Dashboard</a></li>
-                        <li><a class="px-1 py-1 hover:bg-[#31748f] duration-300 mr-1 rounded-lg" href="/user">User</a></a>
-                        <li><a class="px-1 py-1 hover:bg-[#31748f] duration-300 mr-1 rounded-lg" href="/team">Team</a></a>
+                        <li><a class="px-1 py-1 lg:px-2 text-slate-400 hover:bg-[#31748f] hover:text-white duration-300 mr-1 lg:mr-4 rounded-lg font-bold" href="/">Dashboard</a></li>
+                        <li><a class="px-1 py-1 lg:px-2 text-slate-400 hover:bg-[#31748f] hover:text-white duration-300 mr-1 lg:mr-4 rounded-lg" href="/user">User</a></a>
+                        <li><a class="px-1 py-1 lg:px-2 text-slate-400 hover:bg-[#31748f] hover:text-white duration-300 mr-1 lg:mr-4 rounded-lg" href="/team">Team</a></a>
                     </ul>
                 </div>
             </div>
@@ -52,6 +52,7 @@
             <div class="container mx-auto text-slate-600">
                 <p>My <a href="https://cs50.harvard.edu/" target="_blank">CS50</a> Project</p>
                 <a href="https://gitlab.com/aamirazad/folding" target="_blank">Gitlab repo</a>
+                <p>All times are in GMT</p>
             </div>
         </footer>
 
@@ -64,6 +65,7 @@
             });
         </script>
         {% block script %}{% endblock %}
-    </body>
+    </div>
+</body>
 
 </html>

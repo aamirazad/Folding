@@ -69,12 +69,16 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/user">
-        <input class="text-[#c4a7e7] bg-indigo-950 rounded-lg p-3 w-1/16 m-5" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
-        <input type="checkbox" id="save" name="save" {{ save }}>
-        <label for="save">Save data?</label>
-        <button type="submit">Lookup</button>
-    </form>
+    <div class="flex justify-center">
+      <form action="/user">
+          <input class="text-[#c4a7e7] bg-indigo-950 rounded-lg p-3 w-1/16 m-5 flex-auto" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
+          <div class="rounded-lg">
+            <input type="checkbox" id="save" name="save" {{ save }}>
+            <label for="save">Save data?</label>
+          </div>
+          <button class="bg-indigo-950 hover:bg-indigo-800 duration-100" type="submit">Lookup</button>
+      </form>
+    </div>
     <hr>
     <div class="relative h-350-px mx-32">
       <canvas id="userChart"></canvas>
