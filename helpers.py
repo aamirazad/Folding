@@ -1,6 +1,8 @@
 import simplejson as json
 import requests
 import sqlite3
+from datetime import datetime
+import logging
 
 def get_db():
     conn = sqlite3.connect('database.db')
@@ -40,14 +42,20 @@ def lookup_user(user, save):
     # Check to make sure that user exists
     if not user_data:
         return None
+    # Check when the last save took place
+    database = query_db('SELECT * FROM user WHERE user_id = ?', [str(user_id)])
+    date = datetime.utcnow()
+    formatted = date.strftime('%F %T')
+    diff = formatted - database[0]["date"]
+    logging.debug(diff)
     # Add the user's score to the database if told to save
     if save == 'checked':
         conn = get_db()
-        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_data['id']),)
+        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_id),)
         conn.commit()
         conn.close()
     # Query the database for the user
-    database = query_db('SELECT * FROM user WHERE user_id = ?', [user_data["id"]])
+    database = query_db('SELECT * FROM user WHERE user_id = ?', str(user_id))
     database_dict = [dict(row) for row in database]
     # Render the username input form
     return database_dict

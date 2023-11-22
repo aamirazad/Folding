@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from helpers import lookup_user, get_db, query_db
 import logging
+from datetime import datetime
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -12,6 +13,9 @@ def index():
 
 @app.route("/user")
 def user():
+    today = datetime.utcnow()
+    converted = today.strftime('%F %T')
+    logging.info(converted)
     q = request.args.get("q")
     save = request.args.get("save")
     # Change save's value to make sure html can read it
