@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "tailwindcss": "^3.1.8"
+  },
+  "scripts": {
+    "tailwind": "bunx tailwindcss -i ./static/src/input.css -o ./static/css/main.css --watch"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.7"
+  }
+}
