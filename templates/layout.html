@@ -12,37 +12,57 @@
 
         <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
 
+        <!-- Google (bunny) Fonts -->
+        <link href="https://fonts.bunny.net/css2?family=Cabin&display=swap" rel="stylesheet">
+
         {% block head %}{% endblock %}
         
         <title>folding.aamira -> {% block title %}{% endblock %}</title>
 
     </head>
 
-<body class="bg-sky-950">
+<body class="min-h-screen bg-gradient-to-b from-sky-950 to-blue-950 h-screen justify-between">
 
         <nav class="">
-            <div class="">
-                <a class="" href="/">folding.aamira</span></a>
-                <div class="" id="navbar">
-                    <ul class="">
-                        <li class=""><a class="nav-link" href="/">Dashboard</a></li>
-                        <li class=""><a class="nav-link" href="/user">User</a></li>
-                        <li class=""><a class="nav-link" href="/team">Team</a></li>
-                        <li class=""><a class="nav-link" href="/history">History</a></li>
+            <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+                <div class="block lg:hidden">
+                    <button id="toggleButton" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-sky-100 hover:border-teal-500 appearance-none focus:outline-none">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <title>Menu</title>
+                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                    </svg>
+                    </button>
+                </div>
+                <a style="font-family: 'Cabin'" class="font-bold text-xl lg:text-4xl text-teal-500" href="/">folding.aamira</span></a>
+                <div class="hidden lg:flex flex-wrap items-center" id="navbar">
+                    <ul class="flex flex-wrap">
+                        <li><a class="px-1 py-1 hover:bg-red-300 duration-300 mr-1 rounded-lg font-bold" href="/">Dashboard</a></li>
+                        <li><a class="px-1 py-1 hover:bg-red-300 duration-300 mr-1 rounded-lg" href="/user">User</a></a>
+                        <li><a class="px-1 py-1 hover:bg-red-300 duration-300 mr-1 rounded-lg" href="/team">Team</a></a>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="text-sky-100 text-center">
+        <main class="text-sky-100 text-center mt-10">
             {% block main %}{% endblock %}
         </main>
 
-        <footer class="">
-            <p>CS50 Project</p>
-            <a href="https://gitlab.com/aamirazad/folding">Credits</a>
+        <footer class="sticky top-[100vh] w-full py-4">
+            <div class="container mx-auto text-slate-600">
+                <p>My <a href="https://cs50.harvard.edu/" target="_blank">CS50</a> Project</p>
+                <a href="https://gitlab.com/aamirazad/folding" target="_blank">Gitlab repo</a>
+            </div>
         </footer>
-        
+
+        <script>
+            const toggleButton = document.getElementById('toggleButton');
+            const navbar = document.getElementById('navbar');
+
+            toggleButton.addEventListener('click', () => {
+                navbar.classList.toggle('hidden');
+            });
+        </script>
         {% block script %}{% endblock %}
     </body>
 
