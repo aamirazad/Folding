@@ -7,13 +7,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, width=device-width">
 
-        <!-- https://favicon.io/emoji-favicons/money-bag/ -->
-        <link href="/static/favicon.ico" rel="icon">
 
         <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
 
         <!-- Google (bunny) Fonts -->
-        <link href="https://fonts.bunny.net/css2?family=Cabin&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+        <link href="https://fonts.bunny.net/css?family=cabin:700|nunito-sans:500" rel="stylesheet" />
 
         {% block head %}{% endblock %}
         
@@ -33,7 +32,7 @@
                     </svg>
                     </button>
                 </div>
-                <a style="font-family: 'Cabin'" class="font-bold text-xl lg:text-4xl text-teal-500" href="/">folding.aamira</span></a>
+                <a style="font-family: 'Cabin'" class="font-bold text-xl sm:text-4xl text-teal-500" id="title" href="/">folding.aamira</span></a>
                 <div class="hidden lg:flex flex-wrap items-center" id="navbar">
                     <ul class="flex flex-wrap">
                         <li><a class="px-1 py-1 lg:px-2 text-slate-400 hover:bg-[#31748f] hover:text-white duration-300 mr-1 lg:mr-4 rounded-lg font-bold" href="/">Dashboard</a></li>
@@ -44,11 +43,11 @@
             </div>
         </nav>
 
-        <main class="text-sky-100 text-center mt-10">
+        <main class="text-sky-100 text-center mt-10 font-sans">
             {% block main %}{% endblock %}
         </main>
 
-        <footer class="sticky top-[100vh] w-full py-4">
+        <footer class="sticky top-[100vh] w-full py-4 text-xs lg:text-sm font-cabin">
             <div class="container mx-auto text-slate-600">
                 <p>My <a href="https://cs50.harvard.edu/" target="_blank">CS50</a> Project</p>
                 <a href="https://gitlab.com/aamirazad/folding" target="_blank">Gitlab repo</a>
@@ -59,9 +58,11 @@
         <script>
             const toggleButton = document.getElementById('toggleButton');
             const navbar = document.getElementById('navbar');
+            const title = document.getElementById('title')
 
             toggleButton.addEventListener('click', () => {
                 navbar.classList.toggle('hidden');
+                title.classList.toggle('hidden');
             });
         </script>
         {% block script %}{% endblock %}
