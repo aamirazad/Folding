@@ -7,7 +7,6 @@ tasks:
 
 vscode:
   extensions:
-    - svelte.svelte-vscode
     - eamodio.gitlens
     - ms-python.python
     - bradlc.vscode-tailwindcss

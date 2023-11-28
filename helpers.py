@@ -22,9 +22,9 @@ def query_api(args):
     )
     return requests.get(url).json()
 
-def lookup_user(user, save):
-    """Lookup user's states"""
-    # Make sure an argument was given
+def get_user(user):
+    """Ping folding@home's api for user data"""
+        # Make sure an argument was given
     if user is None:
         return None
     try:
@@ -34,29 +34,32 @@ def lookup_user(user, save):
             user_id = user_stats[0]["id"]
         else:
             user_id = user
-        # Get user data
+        # Return user data
         user_data = query_api(f"/uid/{user_id}")
+        return user_data, user_id
     # If a web error happens return None
     except:
         return None
     # Check to make sure that user exists
     if not user_data:
         return None
-    # Check when the last save took place
-    # database = query_db('SELECT * FROM user WHERE user_id = ?', [str(user_id)])
-    # date = datetime.utcnow()
-    # formatted = date.strftime('%F %T')
-    # diff = formatted - database[0]["date"]
-    # logging.debug(diff)
+        
+def save_user(user_id, score):
+    """Save user data"""
+    conn = get_db()
+    conn.execute('INSERT INTO user (user_id,score) VALUES (?, ?)', (user_id,score),)
+    conn.commit()
+    conn.close()
+
+def lookup_user(user, save):
+    """Lookup user's states"""
+    # Query api for user data
+    user_data, user_id = get_user(user)
     # Add the user's score to the database if told to save
     if save == 'checked':
-        conn = get_db()
-        conn.execute('INSERT INTO user (score, user_id) VALUES (?, ?)', (user_data["score"],user_id),)
-        conn.commit()
-        conn.close()
+        save_user(user_id,user_data["score"])
     # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = ?', [str(user_id)])
     database_dict = [dict(row) for row in database]
     # Render the username input form
     return database_dict
-
