@@ -1,8 +1,8 @@
 import simplejson as json
 import requests
 import sqlite3
-from datetime import datetime
 import logging
+import time
 
 def get_db():
     conn = sqlite3.connect('database.db')
@@ -63,3 +63,10 @@ def lookup_user(user, save):
     database_dict = [dict(row) for row in database]
     # Render the username input form
     return database_dict
+
+def auto_save():
+    # Get list of user's setup to be auto saved
+    users = query_db('SELECT user_id as user_id FROM saves')
+    #for user in users:
+        #data = get_user(user['user_id'])
+        #save_user(user['user_id'], data["score"])
