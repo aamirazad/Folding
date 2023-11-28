@@ -27,6 +27,8 @@
     },
 
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         title: {
           text: "Total User's Points",
@@ -61,7 +63,6 @@
         xAxisKey: 'date',
         yAxisKey: 'score'
       },
-
     }
   });
 
@@ -70,7 +71,7 @@
 
 {% block main %}
 
-<div class="divide-y-4 divide-slate-400/25">
+<div class="flex flex-col divide-y-4 divide-slate-400/25 mx-32 space-y-6">
   <div class="flex justify-center space-x-1">
     <form action="/user">
         <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-1/16 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
@@ -79,8 +80,8 @@
         <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1" type="submit">Lookup</button>
     </form>
   </div>
-  <div class="relative h-350-px mx-32">
-    <canvas id="userChart"></canvas>
+  <div class="h-96">
+    <canvas class="" id="userChart"></canvas>
   </div>
 </div>
 
