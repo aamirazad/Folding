@@ -24,16 +24,17 @@ def query_api(args):
 
 def get_user(user):
     """Ping folding@home's api for user data"""
-        # Make sure an argument was given
+    # Make sure an argument was given
     if user is None:
         return None
     try:
         # Change to id if id is not given
-        if not user.isnumeric():
-            user_stats = query_api(f"/search/user?query={user}")
-            user_id = user_stats[0]["id"]
-        else:
+        user_stats = query_api(f"/search/user?query={user}")
+        # This would happen when 
+        if user_stats == []:
             user_id = user
+        else:
+            user_id = user_stats[0]["id"]
         # Return user data
         user_data = query_api(f"/uid/{user_id}")
         return user_data, user_id
@@ -54,6 +55,9 @@ def save_user(user_id, score):
 def lookup_user(user, save):
     """Lookup user's states"""
     # Query api for user data
+    # Make sure an argument was given
+    if user is None:
+        return None
     user_data, user_id = get_user(user)
     # Add the user's score to the database if told to save
     if save == 'checked':
@@ -67,6 +71,8 @@ def lookup_user(user, save):
 def auto_save():
     # Get list of user's setup to be auto saved
     users = query_db('SELECT user_id as user_id FROM saves')
-    #for user in users:
-        #data = get_user(user['user_id'])
-        #save_user(user['user_id'], data["score"])
+    for user in users:
+        logging.debug(f"USER ID {user['user_id']}")
+        data = get_user(int(user['user_id']))
+        logging.debug(data)
+        save_user(user['user_id'], data[0]["score"])

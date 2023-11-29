@@ -27,5 +27,4 @@ def user():
     database_dict = lookup_user(q, save)
     if database_dict is None:
         return render_template("error.html")
-    auto_save()
     return render_template("user.html", database=database_dict, username=q, save=save)
