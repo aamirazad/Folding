@@ -14,5 +14,4 @@ build/
 *.egg-info/
 
 node_modules/
-static/css/main.css
 bun.lockb
