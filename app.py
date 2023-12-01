@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from helpers import lookup_user, get_db, query_db, auto_save, get_user
-import logging
 from apscheduler.schedulers.background import BackgroundScheduler
-
-logging.basicConfig(level=logging.DEBUG)
 
 scheduler = BackgroundScheduler(daemon=True)
 
@@ -23,7 +20,6 @@ def user():
     if request.method == "POST":
         username = request.form.get("auto-save")
         user_data,user_id = get_user(username)
-        logging.debug(user_id)
         conn = get_db()
         conn.execute('REPLACE INTO saves (user_id) VALUES (?)', [str(user_id)])
         conn.commit()

@@ -1,7 +1,6 @@
 import simplejson as json
 import requests
 import sqlite3
-import logging
 
 def get_db():
     conn = sqlite3.connect('database.db')
@@ -69,16 +68,12 @@ def lookup_user(user, save):
 
 def auto_save():
     # Get list of user's setup to be auto saved
-    logging.debug("autosave")
     users = query_db('SELECT user_id as user_id FROM saves')
     for user in users:
-        logging.debug(f"USER ID {user['user_id']}")
         data = get_user(int(user['user_id']))
-        logging.debug(data)
         save_user(user['user_id'], data[0]["score"])
 
 def back_save():
-    logging.debug("backsave")
     while True:
         auto_save()
         time.sleep(600)
