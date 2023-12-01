@@ -35,13 +35,14 @@ def get_user(user):
             user_id = user_stats[0]["id"]
         # Return user data
         user_data = query_api(f"/uid/{user_id}")
+        # If no user data is returned (invalid user) return None
+        if not user_data:
+            return None
         return user_data, user_id
     # If a web error happens return None
     except:
         return None
-    # Check to make sure that user exists
-    if not user_data:
-        return None
+
         
 def save_user(user_id, score):
     """Save user data"""
@@ -56,7 +57,10 @@ def lookup_user(user, save):
     # Make sure an argument was given
     if user is None:
         return None
-    user_data, user_id = get_user(user)
+    result = get_user(user)
+    if result is None:
+        return None
+    user_data, user_id = result
     # Add the user's score to the database if told to save
     if save == 'checked':
         save_user(user_id,user_data["score"])
@@ -71,9 +75,5 @@ def auto_save():
     users = query_db('SELECT user_id as user_id FROM saves')
     for user in users:
         data = get_user(int(user['user_id']))
-        save_user(user['user_id'], data[0]["score"])
-
-def back_save():
-    while True:
-        auto_save()
-        time.sleep(600)
+        if data is not None:
+            save_user(user['user_id'], data[0]["score"])

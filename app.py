@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request, redirect
-from helpers import lookup_user, get_db, query_db, auto_save, get_user
+from helpers import lookup_user, get_db, auto_save, get_user
 from apscheduler.schedulers.background import BackgroundScheduler
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 scheduler = BackgroundScheduler(daemon=True)
 
 app = Flask(__name__)
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 # Start auto saver
 with app.app_context():
@@ -19,7 +24,9 @@ def index():
 def user():
     if request.method == "POST":
         username = request.form.get("auto-save")
-        user_data,user_id = get_user(username)
+        user_id = get_user(username)
+        if user_id is None:
+            return render_template("error.html")
         conn = get_db()
         conn.execute('REPLACE INTO saves (user_id) VALUES (?)', [str(user_id)])
         conn.commit()
