@@ -1,8 +1,8 @@
+import logging
 from flask import Flask, render_template, request, redirect
 from helpers import lookup_user, get_db, auto_save, get_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
-import datetime
 
 scheduler = BackgroundScheduler(daemon=True)
 
@@ -28,13 +28,18 @@ def index():
 def user():
     if request.method == "POST":
         username = request.form.get("auto-save")
-        user_id = get_user(username)
+        data = get_user(username)
+        user_id = data[0]['id']
+        logging.debug(f"USER_ID -------------------------{user_id}")
         if user_id is None:
             return render_template("error.html")
-        conn = get_db()
-        conn.execute('REPLACE INTO saves (user_id) VALUES (?)', [str(user_id)])
-        conn.commit()
-        conn.close()
+        logging.debug(user_id)
+        db = get_db().bind.raw_connection()
+        cursor = db.cursor()
+        cursor.execute('REPLACE INTO saves (user_id) VALUES (%s)', user_id)
+        db.commit()
+        cursor.close()
+        db.close()
         return redirect(f"/user?q={username}")
     else:
         q = request.args.get("q")

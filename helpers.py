@@ -95,6 +95,7 @@ def lookup_user(user, save):
                 formatted_row.append(value)
         formatted_database.append(formatted_row)
     logging.debug(formatted_database)
+    auto_save()
     return formatted_database
 
 def auto_save():
@@ -102,5 +103,6 @@ def auto_save():
     users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
         data = get_user(int(user['user_id']))
+
         if data is not None:
             save_user(user['user_id'], data[0]["score"])
