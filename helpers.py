@@ -7,14 +7,19 @@ import os
 import logging
 import datetime
 
-logging.basicConfig(level=logging.DEBUG)
 
 load_dotenv()
+
+# Setup logging
+if os.getenv('LOGGING') == True:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.ERROR)
 
 def get_db():
     engine = create_engine(
         f"mysql+pymysql://{os.getenv('DATABASE_USERNAME')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}/{os.getenv('DATABASE')}",
-        echo=True,
+        echo=os.getenv('LOGGING') == 'True',
         connect_args={
             'ssl': {
                 'ca': os.getenv('CERT', '/etc/ssl/cert.pem'),
