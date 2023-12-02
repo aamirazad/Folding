@@ -3,6 +3,7 @@ from helpers import lookup_user, get_db, auto_save, get_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+
 scheduler = BackgroundScheduler(daemon=True)
 
 app = Flask(__name__)
