@@ -14,6 +14,7 @@ load_dotenv()
 def get_db():
     engine = create_engine(
         f"mysql+pymysql://{os.getenv('DATABASE_USERNAME')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}/{os.getenv('DATABASE')}",
+        echo=True,
         connect_args={
             'ssl': {
                 'ca': os.getenv('CERT', '/etc/ssl/cert.pem'),
@@ -25,7 +26,7 @@ def get_db():
 
 def query_db(query, args=(), one=False):
     db = get_db()
-    result = db.execute(text(query), args).fetchall()
+    result = db.execute(text(query), args)
     db.close()
     return result
 
@@ -62,13 +63,14 @@ def get_user(user):
         
 def save_user(user_id, score):
     """Save user data"""
-    db = get_db().bind.raw_connection()
-    cursor = db.cursor()
-    cursor.execute('INSERT INTO user (user_id, score) VALUES (%s, %s)', (user_id, score))
-    db.commit()
-    cursor.close()
-    db.close()
-    return user_id
+    # db = get_db().bind.raw_connection()
+    # cursor = db.cursor()
+    # cursor.execute('INSERT INTO user (user_id, score) VALUES (%s, %s)', (user_id, score))
+    # db.commit()
+    # cursor.close()
+    # db.close()
+    query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
+    return
 
 def lookup_user(user, save):
     """Lookup user's states"""
@@ -94,15 +96,12 @@ def lookup_user(user, save):
             else:
                 formatted_row.append(value)
         formatted_database.append(formatted_row)
-    logging.debug(formatted_database)
-    auto_save()
     return formatted_database
 
 def auto_save():
     # Get list of user's setup to be auto saved
     users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
-        data = get_user(int(user['user_id']))
-
+        data = get_user(user[0])
         if data is not None:
-            save_user(user['user_id'], data[0]["score"])
+            save_user(user[0], data[0]['score'])
