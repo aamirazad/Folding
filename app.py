@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 from helpers import lookup_user, get_db, auto_save, get_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
-
+import datetime
 
 scheduler = BackgroundScheduler(daemon=True)
 
@@ -48,5 +48,14 @@ def user():
         database_dict = lookup_user(q, save)
         if database_dict is None:
             return render_template("error.html")
-        return render_template("user.html", database=database_dict, username=q, save=save)
+        
+        # Format database
+        formatted_database = []
+        for row in database_dict:
+            formatted_row = {
+                'x': row[1],
+                'y': row[2]
+            }
+            formatted_database.append(formatted_row)
+        return render_template("user.html", database=formatted_database, username=q, save=save)
 

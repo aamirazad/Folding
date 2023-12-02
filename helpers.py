@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
 import logging
+import datetime
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -84,12 +85,21 @@ def lookup_user(user, save):
         save_user(user_id,user_data["score"])
     # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = :user_id', {'user_id': user_id}, one=True)
-    logging.debug(database)
-    return database
+    formatted_database = []
+    for row in database:
+        formatted_row = []
+        for value in row:
+            if isinstance(value, datetime.datetime):
+                formatted_row.append(value.strftime('%Y-%m-%d %H:%M:%S'))
+            else:
+                formatted_row.append(value)
+        formatted_database.append(formatted_row)
+    logging.debug(formatted_database)
+    return formatted_database
 
 def auto_save():
     # Get list of user's setup to be auto saved
-    users = query_db('SELECT user_id FROM saves')
+    users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
         data = get_user(int(user['user_id']))
         if data is not None:
