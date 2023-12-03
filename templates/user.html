@@ -31,7 +31,7 @@
       maintainAspectRatio: false,
       plugins: {
         title: {
-          text: "Total User's Points",
+          text: "{{ username }}'s lifetime points",
           display: true
         },
         legend: {
@@ -58,10 +58,6 @@
             text: 'Points'
           }
         }
-      },
-      parsing: {
-        xAxisKey: 'date',
-        yAxisKey: 'score'
       },
     }
   });

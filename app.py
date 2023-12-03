@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, render_template, request, redirect
 from helpers import lookup_user, get_db, auto_save, get_user
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -27,13 +28,18 @@ def index():
 def user():
     if request.method == "POST":
         username = request.form.get("auto-save")
-        user_id = get_user(username)
+        data = get_user(username)
+        user_id = data[0]['id']
+        logging.debug(f"USER_ID -------------------------{user_id}")
         if user_id is None:
             return render_template("error.html")
-        conn = get_db()
-        conn.execute('REPLACE INTO saves (user_id) VALUES (?)', [str(user_id)])
-        conn.commit()
-        conn.close()
+        logging.debug(user_id)
+        db = get_db().bind.raw_connection()
+        cursor = db.cursor()
+        cursor.execute('REPLACE INTO saves (user_id) VALUES (%s)', user_id)
+        db.commit()
+        cursor.close()
+        db.close()
         return redirect(f"/user?q={username}")
     else:
         q = request.args.get("q")
@@ -47,5 +53,14 @@ def user():
         database_dict = lookup_user(q, save)
         if database_dict is None:
             return render_template("error.html")
-        return render_template("user.html", database=database_dict, username=q, save=save)
+        
+        # Format database
+        formatted_database = []
+        for row in database_dict:
+            formatted_row = {
+                'x': row[1],
+                'y': row[2]
+            }
+            formatted_database.append(formatted_row)
+        return render_template("user.html", database=formatted_database, username=q, save=save)
 

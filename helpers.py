@@ -1,17 +1,39 @@
 import simplejson as json
 import requests
-import sqlite3
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine, text
+from dotenv import load_dotenv
+import os
+import logging
+import datetime
+
+
+load_dotenv()
+
+# Setup logging
+if os.getenv('LOGGING') == True:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.ERROR)
 
 def get_db():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+    engine = create_engine(
+        f"mysql+pymysql://{os.getenv('DATABASE_USERNAME')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}/{os.getenv('DATABASE')}",
+        echo=os.getenv('LOGGING') == 'True',
+        connect_args={
+            'ssl': {
+                'ca': os.getenv('CERT', '/etc/ssl/cert.pem'),
+            },
+        }
+    )
+    db = scoped_session(sessionmaker(bind=engine))
+    return db
 
 def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+    db = get_db()
+    result = db.execute(text(query), args)
+    db.close()
+    return result
 
 # Base api handling
 def query_api(args):
@@ -46,10 +68,14 @@ def get_user(user):
         
 def save_user(user_id, score):
     """Save user data"""
-    conn = get_db()
-    conn.execute('INSERT INTO user (user_id,score) VALUES (?, ?)', (user_id,score),)
-    conn.commit()
-    conn.close()
+    # db = get_db().bind.raw_connection()
+    # cursor = db.cursor()
+    # cursor.execute('INSERT INTO user (user_id, score) VALUES (%s, %s)', (user_id, score))
+    # db.commit()
+    # cursor.close()
+    # db.close()
+    query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
+    return
 
 def lookup_user(user, save):
     """Lookup user's states"""
@@ -65,15 +91,22 @@ def lookup_user(user, save):
     if save == 'checked':
         save_user(user_id,user_data["score"])
     # Query the database for the user
-    database = query_db('SELECT * FROM user WHERE user_id = ?', [str(user_id)])
-    database_dict = [dict(row) for row in database]
-    # Render the username input form
-    return database_dict
+    database = query_db('SELECT * FROM user WHERE user_id = :user_id', {'user_id': user_id}, one=True)
+    formatted_database = []
+    for row in database:
+        formatted_row = []
+        for value in row:
+            if isinstance(value, datetime.datetime):
+                formatted_row.append(value.strftime('%Y-%m-%d %H:%M:%S'))
+            else:
+                formatted_row.append(value)
+        formatted_database.append(formatted_row)
+    return formatted_database
 
 def auto_save():
     # Get list of user's setup to be auto saved
-    users = query_db('SELECT user_id as user_id FROM saves')
+    users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
-        data = get_user(int(user['user_id']))
+        data = get_user(user[0])
         if data is not None:
-            save_user(user['user_id'], data[0]["score"])
+            save_user(user[0], data[0]['score'])
