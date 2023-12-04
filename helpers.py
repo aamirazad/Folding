@@ -68,12 +68,6 @@ def get_user(user):
         
 def save_user(user_id, score):
     """Save user data"""
-    # db = get_db().bind.raw_connection()
-    # cursor = db.cursor()
-    # cursor.execute('INSERT INTO user (user_id, score) VALUES (%s, %s)', (user_id, score))
-    # db.commit()
-    # cursor.close()
-    # db.close()
     query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
     return
 

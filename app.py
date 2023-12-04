@@ -16,9 +16,9 @@ if __name__ == "__main__":
     app.run(host='0.0.0.0')
 
 # Start auto saver
-# with app.app_context():
-#     scheduler.add_job(auto_save, 'interval', minutes=10)
-#     scheduler.start()
+with app.app_context():
+    scheduler.add_job(auto_save, 'interval', minutes=10)
+    scheduler.start()
 
 @app.route("/")
 def index():
