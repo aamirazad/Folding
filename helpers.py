@@ -86,6 +86,7 @@ def lookup_user(user, save):
         save_user(user_id,user_data["score"])
     # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = :user_id', {'user_id': user_id}, one=True)
+    # Replace datetime with the actual date
     formatted_database = []
     for row in database:
         formatted_row = []

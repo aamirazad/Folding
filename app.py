@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 # Start auto saver
 with app.app_context():
-    scheduler.add_job(auto_save, 'interval', minutes=10)
+    scheduler.add_job(auto_save, 'interval', minutes=30)
     scheduler.start()
 
 @app.route("/")
@@ -50,17 +50,12 @@ def user():
         # If the form wasn't submitted, show the form
         if not q:
             return render_template("user.html")
-        database_dict = lookup_user(q, save)
-        if database_dict is None:
+        database = lookup_user(q, save)
+        if database is None:
             return render_template("error.html")
         
-        # Format database for chartjs
-        formatted_database = []
-        for row in database_dict:
-            formatted_row = {
-                'x': row[1],
-                'y': row[2]
-            }
-            formatted_database.append(formatted_row)
-        return render_template("user.html", database=formatted_database, username=q, save=save)
+        # Format database for graphing
+        x_values = [data[1] for data in database]  # Extract the date
+        y_values = [data[2] for data in database]  # Extract the score
+        return render_template("user.html", x_values=x_values, y_values=y_values, username=q, save=save)
 

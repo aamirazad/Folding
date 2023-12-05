@@ -6,89 +6,74 @@
 
 {% block head %}
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
 
 {% endblock %}
 
 {% block script %}
   <script>
 
-  const ctx = document.getElementById('userChart');
+// Lifetime chart
 
-  new Chart(ctx, {
-    type: 'line',
-    label: 'Points',
+var trace1 = {
+  x: {{ x_values | safe }},
+  y: {{ y_values | safe }},
+  type: 'scatter'
+};
 
-    data: {
-      datasets: [{
-        data: {{ database | safe }}
-      }]
+var data = [trace1];
+
+var layout = {
+    title: "{{ username }}'s lifetime points",
+    showlegend: false,
+    paper_bgcolor: 'transparent',
+    plot_bgcolor: 'transparent',
+    font: {
+      color: '#94a3b8',
+      family: 'Nunito Sans'
     },
+    xaxis: {
+        gridcolor: '#64748b' 
+    },
+    yaxis: {
+        gridcolor: '#64748b' 
+    },
+    modebar: {
+      remove: ['select2d', 'lasso2d', 'autoScale2d'],
+      orientation: 'v'
+    },
+    colorway: ['#3730a3']
+};
 
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          text: "{{ username }}'s lifetime points",
-          display: true
-        },
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          text: "Date",
-          type: 'time',
-          title: {
-            display: true,
-            text: 'Date'
-          },
-          time: {
-            displayFormats: {
-              quarter: 'day'
-            }
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Points'
-          }
-        }
-      },
-    }
-  });
+Plotly.newPlot('lifetime_chart', data, layout, {scrollZoom: true})
 
-// When the form is submitted, unhide the add to save button
-let params = new URLSearchParams(window.location.search);
-if (params.has('q')) {
-    // Unhide the element
-    document.querySelector('#add-to-save').classList.remove('hidden');
-} 
+
+  // When the form is submitted, unhide the add to save button
+  let params = new URLSearchParams(window.location.search);
+  if (params.has('q')) {
+      // Unhide the element
+      document.querySelector('#add-to-save').classList.remove('hidden');
+  } 
 
 </script>
 {% endblock %}
 
 {% block main %}
 
-<div class="flex flex-col divide-y-4 divide-slate-400/25 mx-64 space-y-6">
-  <div class="flex justify-center space-x-1">
+<div class="flex flex-col divide-y-4 divide-slate-400/25 mx-8 lg:mx-80 space-y-6 ">
+  <div class="flex flex-col justify-center">
     <form action="/user">
-        <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-1/16 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
+      <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-1/16 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
         <input type="checkbox" id="save" name="save" class="" {{ save }}>
-        <label for="save" class="mr-5">Save data?</label>
-        <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1" type="submit">Lookup</button>
+        <label for="save" class="mr-5 whitespace-nowrap">Save data?</label>
+      <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1" type="submit">Lookup</button>
     </form>
-  </div>
-  <div class="h-96">
     <form class="hidden" id="add-to-save" action="/user" method="post">
       <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1 m-4" type="submit" id="auto-save" name="auto-save" value="{{ username }}">Add user to auto save list?</button>
     </form>
-    <canvas class="" id="userChart"></canvas>
   </div>
+  <div class="justify-center w-full h-96" id="lifetime_chart"></div>
+  <div class="justify-center w-full h-96" id="daily-chart"></div>
 </div>
 
 {% endblock %}
