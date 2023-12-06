@@ -30,7 +30,6 @@ def user():
         username = request.form.get("auto-save")
         data = get_user(username)
         user_id = data[0]['id']
-        logging.debug(f"USER_ID -------------------------{user_id}")
         if user_id is None:
             return render_template("error.html")
         logging.debug(user_id)
@@ -55,7 +54,8 @@ def user():
             return render_template("error.html")
         
         # Format database for graphing
-        x_values = [data[1] for data in database]  # Extract the date
-        y_values = [data[2] for data in database]  # Extract the score
-        return render_template("user.html", x_values=x_values, y_values=y_values, username=q, save=save)
+        date = [data[1] for data in database]  # Extract the date
+        score = [data[2] for data in database]  # Extract the score
+
+        return render_template("user.html", x_values=date, y_values=score, username=q, save=save)
 
