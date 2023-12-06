@@ -7,8 +7,7 @@ import os
 import logging
 import datetime
 
-
-load_dotenv()
+logging.basicConfig(level=logging.DEBUG)
 
 # Setup logging
 if os.getenv('LOGGING') == True:
@@ -71,7 +70,7 @@ def save_user(user_id, score):
     query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
     return
 
-def lookup_user(user, save):
+def lookup_user(user, save=False):
     """Lookup user's states"""
     # Query api for user data
     # Make sure an argument was given
