@@ -20,18 +20,19 @@
   // If the form was submitted
   if (params.has('q')) {
     // Unide the auto save button
-    document.querySelector('#add-to-save').classList.remove('hidden');
+    document.querySelector('#add-to-save').classList.remove('hidden')
+
     // Get the data
     fetch('/data/user?username=' + encodeURIComponent(q))
     .then(response => response.json())
     .then(data => {
+        formatted = JSON.parse(data);
         var trace1 = {
-            x: data.date,
-            y: data.score,
+            x: formatted.date,
+            y: formatted.score,
             type: 'scatter'
         };
         var stats = [trace1];
-        console.log(stats)
         let title = q + "'s lifetime points";
         var layout = {
             title: title,
