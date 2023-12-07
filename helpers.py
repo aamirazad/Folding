@@ -98,9 +98,17 @@ def lookup_user(user, save=False):
     return formatted_database
 
 def auto_save():
-    # Get list of user's setup to be auto saved
-    users = query_db('SELECT user_id FROM saves', one=True)
-    for user in users:
-        data = get_user(user[0])
-        if data is not None:
-            save_user(user[0], data[0]['score'])
+    # If it's midnight
+    if (time.time() % 86400) == 0:
+        users = query_db('SELECT user_id FROM saves', one=True)
+        for user in users:
+            data = get_user(user[0])
+            if data is not None:
+                # TODO: Special midnight save
+    else:
+        # Get list of user's setup to be auto saved
+        users = query_db('SELECT user_id FROM saves', one=True)
+        for user in users:
+            data = get_user(user[0])
+            if data is not None:
+                save_user(user[0], data[0]['score'])

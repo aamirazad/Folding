@@ -55,3 +55,13 @@ def get_user():
     scores = [date[2] for date in data]  # Extract the score
     send = json.dumps({"date": dates, "score": scores})
     return jsonify(send)
+
+@app.route('/data/user_daily', methods=['GET'])
+def get_user_daily():
+    username = request.args.get('username')
+    data = 
+    if data is None:
+        return None
+    
+    for entry in data:
+        entry["date"]
