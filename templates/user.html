@@ -81,7 +81,7 @@
 <div class="flex flex-col divide-y-4 divide-slate-400/25 space-y-6 h-4/5">
   <div class="flex flex-col justify-center">
     <form action="/user">
-      <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-1/16 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
+      <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-28 md:w-52 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
         <input type="checkbox" id="save" name="save" class="" {{ save }}>
         <label for="save" class="mr-5 whitespace-nowrap">Save data?</label>
       <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1" type="submit">Lookup</button>
@@ -90,7 +90,7 @@
       <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1 m-4" type="submit" id="auto-save" name="auto-save" value="{{ username }}">Add user to auto save list?</button>
     </form>
   </div>
-  <div class="justify-center flex flex-auto h-96" id="lifetime_chart"></div>
+  <div class="justify-center h-64 md:h-96" id="lifetime_chart"></div>
   <div class="justify-center w-full lg:h-96" id="daily-chart"></div>
 </div>
 
