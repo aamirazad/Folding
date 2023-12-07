@@ -1,8 +1,9 @@
 import logging
-from flask import Flask, render_template, request, redirect
-from helpers import lookup_user, get_db, auto_save, get_user
+from flask import Flask, render_template, request, redirect, jsonify
+from helpers import lookup_user, auto_save, get_user, query_db
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
+import json
 
 scheduler = BackgroundScheduler(daemon=True)
 
@@ -32,7 +33,6 @@ def user():
         user_id = data[0]['id']
         if user_id is None:
             return render_template("error.html")
-        logging.debug(user_id)
         db = get_db().bind.raw_connection()
         cursor = db.cursor()
         cursor.execute('REPLACE INTO saves (user_id) VALUES (%s)', user_id)
@@ -41,21 +41,17 @@ def user():
         db.close()
         return redirect(f"/user?q={username}")
     else:
-        q = request.args.get("q")
-        save = request.args.get("save")
-        # Change save's value to make sure html can read it
-        if save == "on":
-            save = "checked"
-        # If the form wasn't submitted, show the form
-        if not q:
-            return render_template("user.html")
-        database = lookup_user(q, save)
-        if database is None:
-            return render_template("error.html")
-        
-        # Format database for graphing
-        date = [data[1] for data in database]  # Extract the date
-        score = [data[2] for data in database]  # Extract the score
+        return render_template("user.html")
 
-        return render_template("user.html", x_values=date, y_values=score, username=q, save=save)
+@app.route('/data/user', methods=['GET'])
+def get_user():
+    username = request.args.get('username')
+    data = lookup_user(username)
+    if data is None:
+        return None
 
+    # Format database for graphing
+    dates = [date[1] for date in data]  # Extract the date
+    scores = [date[2] for date in data]  # Extract the score
+    send = json.dumps({"date": dates, "score": scores})
+    return jsonify(send)

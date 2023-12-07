@@ -12,55 +12,66 @@
 
 {% block script %}
   <script>
+  // Get parameters
+  let params = new URLSearchParams(window.location.search);
+  let q = params.get('q');
+  let save = params.get('save');
 
-// Lifetime chart
+  // If the form was submitted
+  if (params.has('q')) {
+    // Unide the auto save button
+    document.querySelector('#add-to-save').classList.remove('hidden')
 
-var trace1 = {
-  x: {{ x_values | safe }},
-  y: {{ y_values | safe }},
-  type: 'scatter'
-};
+    // Get the data
+    fetch('/data/user?username=' + encodeURIComponent(q))
+    .then(response => response.json())
+    .then(data => {
+        formatted = JSON.parse(data);
+        var trace1 = {
+            x: formatted.date,
+            y: formatted.score,
+            type: 'scatter'
+        };
+        var stats = [trace1];
+        let title = q + "'s lifetime points";
+        var layout = {
+            title: title,
+            showlegend: false,
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'transparent',
+            font: {
+              color: '#94a3b8',
+              family: 'Nunito Sans'
+            },
+            xaxis: {
+                gridcolor: '#64748b' 
+            },
+            yaxis: {
+                gridcolor: '#64748b' 
+            },
+            modebar: {
+              remove: ['select2d', 'lasso2d', 'autoScale2d'],
+              orientation: 'v'
+            },
+            colorway: ['#3730a3'],
+            margin: {
+                l: 40, // left margin
+                r: 40, // right margin
+                b: 80, // bottom margin
+                t: 80, // top margin
+                pad: 0 // padding
+            }
+        };
 
-var data = [trace1];
+        Plotly.newPlot('lifetime_chart', stats, layout, {scrollZoom: true})
+    });
+  } 
 
-var layout = {
-    title: "{{ username }}'s lifetime points",
-    showlegend: false,
-    paper_bgcolor: 'transparent',
-    plot_bgcolor: 'transparent',
-    font: {
-      color: '#94a3b8',
-      family: 'Nunito Sans'
-    },
-    xaxis: {
-        gridcolor: '#64748b' 
-    },
-    yaxis: {
-        gridcolor: '#64748b' 
-    },
-    modebar: {
-      remove: ['select2d', 'lasso2d', 'autoScale2d'],
-      orientation: 'v'
-    },
-    colorway: ['#3730a3'],
-    margin: {
-        l: 40, // left margin
-        r: 40, // right margin
-        b: 80, // bottom margin
-        t: 80, // top margin
-        pad: 0 // padding
-    }
-};
 
-Plotly.newPlot('lifetime_chart', data, layout, {scrollZoom: true})
 
 
   // When the form is submitted, unhide the add to save button
-  let params = new URLSearchParams(window.location.search);
-  if (params.has('q')) {
-      // Unhide the element
-      document.querySelector('#add-to-save').classList.remove('hidden');
-  } 
+
 
 </script>
 {% endblock %}
@@ -79,7 +90,7 @@ Plotly.newPlot('lifetime_chart', data, layout, {scrollZoom: true})
       <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1 m-4" type="submit" id="auto-save" name="auto-save" value="{{ username }}">Add user to auto save list?</button>
     </form>
   </div>
-  <div class="justify-center flex flex-auto h-full" id="lifetime_chart"></div>
+  <div class="justify-center flex flex-auto h-96" id="lifetime_chart"></div>
   <div class="justify-center w-full lg:h-96" id="daily-chart"></div>
 </div>
 
