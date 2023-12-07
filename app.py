@@ -23,7 +23,7 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return redirect("/user")
 
 @app.route("/user", methods=["GET", "POST"])
 def user():
