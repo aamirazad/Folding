@@ -66,7 +66,7 @@ def get_user(user):
         return None
 
         
-def save_user(user_id, score, day=True):
+def save_user(user_id, score, day=False):
     """Save user data"""
     if day == True:
         query_db('INSERT INTO user (user_id, score, day) VALUES (:user_id, :score, True)', {'user_id': user_id, 'score': score})
@@ -85,7 +85,7 @@ def lookup_user(user, save=False):
         return None
     user_data, user_id = result
     # Add the user's score to the database if told to save
-    if save == 'checked':
+    if save is True:
         save_user(user_id,user_data["score"])
     # Query the database for the user
     database = query_db('SELECT * FROM user WHERE user_id = :user_id', {'user_id': user_id}, one=True)
@@ -111,7 +111,20 @@ def calculate_daily(user):
     user_data, user_id = result
     # Query the database for all of the daily saves for the user
     database = query_db('SELECT * FROM user WHERE user_id = :user_id AND day=True', {'user_id': user_id}, one=True)
-    logging.debug(f"Daily stats {database}")
+    start_score = None
+    daily_stats = []
+    daily_days = []
+    for item in database:
+        if start_score is None:
+            start_score = item[2]
+        else:
+            difference = item[2] - start_score
+            start_score = None
+            daily_stats.append(difference)
+            daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
+            logging.debug(f"DIFFERENCE -------------------------{difference}")
+    logging.debug(f"DAILY STATS --------------{daily_stats}")
+    logging.debug(f"DAILY STATS --------------{daily_days}")
 
 
 def auto_save():

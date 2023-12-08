@@ -41,7 +41,8 @@ def user():
 @app.route('/data/user', methods=['GET'])
 def user_total_api():
     username = request.args.get('username')
-    data = lookup_user(username)
+    save = bool(request.args.get('save'))
+    data = lookup_user(username, save)
     if data is None:
         return None
 

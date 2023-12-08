@@ -28,7 +28,7 @@
     document.querySelector('#save').checked = save;
 
     // Get the data
-    fetch('/data/user?username=' + encodeURIComponent(q))
+    fetch('/data/user?username=' + encodeURIComponent(q) + '&save=' + encodeURIComponent(save))
     .then(response => response.json())
     .then(data => {
         formatted = JSON.parse(data);
