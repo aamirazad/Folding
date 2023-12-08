@@ -8,8 +8,6 @@ import logging
 import datetime
 import time
 
-logging.basicConfig(level=logging.DEBUG)
-
 # Setup logging
 if os.getenv('LOGGING') == True:
     logging.basicConfig(level=logging.DEBUG)
@@ -124,9 +122,6 @@ def calculate_daily(user):
             daily_stats.append(difference)
             daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
     return daily_stats, daily_days
-    
-    
-
 
 def auto_save():
     # If it's midnight
