@@ -57,8 +57,8 @@ def get_user_daily():
     username = request.args.get('username')
     # Get two lists, one with the score differnence, and another with the days that represnt it
     day_score, day_days = calculate_daily(username)
-    if data is None:
+    if day_score is None:
         return None
-    
-    for entry in data:
-        entry["date"]
+    # Send as json
+    send = json.dumps({"date": day_days, "score": day_score})
+    return jsonify(send)
