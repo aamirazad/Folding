@@ -1,6 +1,6 @@
 import logging
 from flask import Flask, render_template, request, redirect, jsonify
-from helpers import lookup_user, auto_save, get_user, query_db
+from helpers import lookup_user, auto_save, get_user, query_db, calculate_daily
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -51,12 +51,12 @@ def user_total_api():
     send = json.dumps({"date": dates, "score": scores})
     return jsonify(send)
 
-# @app.route('/data/user_daily', methods=['GET'])
-# def get_user_daily():
-#     username = request.args.get('username')
-#     data = 
-#     if data is None:
-#         return None
+@app.route('/data/user_daily', methods=['GET'])
+def get_user_daily():
+    username = request.args.get('username')
+    data = calculate_daily(username)
+    if data is None:
+        return None
     
-#     for entry in data:
-#         entry["date"]
+    for entry in data:
+        entry["date"]

@@ -101,6 +101,19 @@ def lookup_user(user, save=False):
         formatted_database.append(formatted_row)
     return formatted_database
 
+def calculate_daily(user):
+    # Get user_id and error check
+    if user is None:
+        return None
+    result = get_user(user)
+    if result is None:
+        return None
+    user_data, user_id = result
+    # Query the database for all of the daily saves for the user
+    database = query_db('SELECT * FROM user WHERE user_id = :user_id AND day=True', {'user_id': user_id}, one=True)
+    logging.debug(f"Daily stats {database}")
+
+
 def auto_save():
     # If it's midnight
     if (time.time() % 86400) == 0:
