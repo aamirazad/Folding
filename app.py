@@ -33,18 +33,13 @@ def user():
         user_id = data[0]['id']
         if user_id is None:
             return render_template("error.html")
-        db = get_db().bind.raw_connection()
-        cursor = db.cursor()
-        cursor.execute('REPLACE INTO saves (user_id) VALUES (%s)', user_id)
-        db.commit()
-        cursor.close()
-        db.close()
+        query_db('REPLACE INTO saves (user_id) VALUES (:user_id)', {'user_id': user_id}, one=True)
         return redirect(f"/user?q={username}")
     else:
         return render_template("user.html")
 
 @app.route('/data/user', methods=['GET'])
-def get_user():
+def user_total_api():
     username = request.args.get('username')
     data = lookup_user(username)
     if data is None:
