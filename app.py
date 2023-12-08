@@ -1,6 +1,6 @@
 import logging
 from flask import Flask, render_template, request, redirect, jsonify
-from helpers import lookup_user, auto_save, get_user, query_db, calculate_daily
+from helpers import lookup_user, auto_save, get_user, query_db, calculate_daily, daily_save
 from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -19,6 +19,7 @@ if __name__ == "__main__":
 # Start auto saver
 with app.app_context():
     scheduler.add_job(auto_save, 'interval', minutes=30)
+    scheduler.add_job(daily_save, 'cron', hour='11', minute='59') 
     scheduler.start()
 
 @app.route("/")

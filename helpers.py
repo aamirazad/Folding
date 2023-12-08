@@ -123,21 +123,18 @@ def calculate_daily(user):
             daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
     return daily_stats, daily_days
 
-def auto_save():
-    # If it's midnight
-    if (time.time() % 86400) == 0:
-        logging.debug("Daily save run")
-        users = query_db('SELECT user_id FROM saves', one=True)
-        for user in users:
-            data = get_user(user[0])
-            if data is not None:
-                # Mark the save as a day save
-                save_user(user[0], data[0]['score'], day=True)
-    # Else, it's a normal auto save
-    else:
-        # Get list of user's setup to be auto saved
-        users = query_db('SELECT user_id FROM saves', one=True)
-        for user in users:
-            data = get_user(user[0])
-            if data is not None:
-                save_user(user[0], data[0]['score'])
+def auto_save(day=False):
+    # Get list of user's setup to be auto saved
+    users = query_db('SELECT user_id FROM saves', one=True)
+    for user in users:
+        data = get_user(user[0])
+        if data is not None:
+            save_user(user[0], data[0]['score'])
+
+def daily_save():
+    users = query_db('SELECT user_id FROM saves', one=True)
+    for user in users:
+        data = get_user(user[0])
+        if data is not None:
+            # Mark the save as a day save
+            save_user(user[0], data[0]['score'], day=True)
