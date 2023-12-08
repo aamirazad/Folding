@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import logging
 import datetime
+import time
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -65,9 +66,12 @@ def get_user(user):
         return None
 
         
-def save_user(user_id, score):
+def save_user(user_id, score, day=True):
     """Save user data"""
-    query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
+    if day == True:
+        query_db('INSERT INTO user (user_id, score, day) VALUES (:user_id, :score, True)', {'user_id': user_id, 'score': score})
+    else:
+        query_db('INSERT INTO user (user_id, score) VALUES (:user_id, :score)', {'user_id': user_id, 'score': score})
     return
 
 def lookup_user(user, save=False):
@@ -100,11 +104,14 @@ def lookup_user(user, save=False):
 def auto_save():
     # If it's midnight
     if (time.time() % 86400) == 0:
+        logging.debug("Daily save run")
         users = query_db('SELECT user_id FROM saves', one=True)
         for user in users:
             data = get_user(user[0])
             if data is not None:
-                # TODO: Special midnight save
+                # Mark the save as a day save
+                save_user(user[0], data[0]['score'], day=True)
+    # Else, it's a normal auto save
     else:
         # Get list of user's setup to be auto saved
         users = query_db('SELECT user_id FROM saves', one=True)

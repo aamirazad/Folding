@@ -56,12 +56,12 @@ def get_user():
     send = json.dumps({"date": dates, "score": scores})
     return jsonify(send)
 
-@app.route('/data/user_daily', methods=['GET'])
-def get_user_daily():
-    username = request.args.get('username')
-    data = 
-    if data is None:
-        return None
+# @app.route('/data/user_daily', methods=['GET'])
+# def get_user_daily():
+#     username = request.args.get('username')
+#     data = 
+#     if data is None:
+#         return None
     
-    for entry in data:
-        entry["date"]
+#     for entry in data:
+#         entry["date"]
