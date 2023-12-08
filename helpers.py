@@ -14,6 +14,8 @@ if os.getenv('LOGGING') == True:
 else:
     logging.basicConfig(level=logging.ERROR)
 
+load_dotenv()
+
 def get_db():
     engine = create_engine(
         f"mysql+pymysql://{os.getenv('DATABASE_USERNAME')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}/{os.getenv('DATABASE')}",
