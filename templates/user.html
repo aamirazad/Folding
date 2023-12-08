@@ -20,7 +20,12 @@
   // If the form was submitted
   if (params.has('q')) {
     // Unide the auto save button
-    document.querySelector('#add-to-save').classList.remove('hidden')
+    document.querySelector('#add-to-save').classList.remove('hidden');
+
+    // Fill the form
+
+    document.querySelector('#q').value = q;
+    document.querySelector('#save').checked = save;
 
     // Get the data
     fetch('/data/user?username=' + encodeURIComponent(q))
@@ -68,11 +73,6 @@
   } 
 
 
-
-
-  // When the form is submitted, unhide the add to save button
-
-
 </script>
 {% endblock %}
 
@@ -81,8 +81,8 @@
 <div class="flex flex-col divide-y-4 divide-slate-400/25 space-y-6 h-4/5">
   <div class="flex flex-col justify-center">
     <form action="/user">
-      <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-28 md:w-52 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="{{ username }}">
-        <input type="checkbox" id="save" name="save" class="" {{ save }}>
+      <input class="text-slate-300 bg-indigo-950 hover:bg-indigo-800 rounded-lg p-3 w-28 md:w-52 m-5 shadow-lg" type="text" id="q" name="q" placeholder="Username" value="">
+        <input type="checkbox" id="save" name="save" class="">
         <label for="save" class="mr-5 whitespace-nowrap">Save data?</label>
       <button class="bg-indigo-950 hover:bg-indigo-800 duration-100 rounded-md px-3 py-1" type="submit">Lookup</button>
     </form>
