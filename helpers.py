@@ -111,6 +111,7 @@ def calculate_daily(user):
     user_data, user_id = result
     # Query the database for all of the daily saves for the user
     database = query_db('SELECT * FROM user WHERE user_id = :user_id AND day=True', {'user_id': user_id}, one=True)
+    # Calculate the difference between every two days
     start_score = None
     daily_stats = []
     daily_days = []
@@ -122,9 +123,9 @@ def calculate_daily(user):
             start_score = None
             daily_stats.append(difference)
             daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
-            logging.debug(f"DIFFERENCE -------------------------{difference}")
-    logging.debug(f"DAILY STATS --------------{daily_stats}")
-    logging.debug(f"DAILY STATS --------------{daily_days}")
+    return daily_stats, daily_days
+    
+    
 
 
 def auto_save():

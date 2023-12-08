@@ -55,7 +55,8 @@ def user_total_api():
 @app.route('/data/user_daily', methods=['GET'])
 def get_user_daily():
     username = request.args.get('username')
-    data = calculate_daily(username)
+    # Get two lists, one with the score differnence, and another with the days that represnt it
+    day_score, day_days = calculate_daily(username)
     if data is None:
         return None
     
