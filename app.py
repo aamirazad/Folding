@@ -18,9 +18,11 @@ if __name__ == "__main__":
 
 # Start auto saver
 with app.app_context():
-    scheduler.add_job(auto_save, 'interval', minutes=30)
+    scheduler.add_job(auto_save, 'cron', minute='1,15,30,45')
     scheduler.add_job(daily_save, 'cron', hour='11', minute='59') 
     scheduler.start()
+    scheduler.print_jobs()
+
 
 @app.route("/")
 def index():
