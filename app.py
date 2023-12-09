@@ -16,12 +16,10 @@ app.wsgi_app = ProxyFix(
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 
-# Start auto saver
-with app.app_context():
-    scheduler.add_job(auto_save, 'cron', minute='1,15,30,45')
-    scheduler.add_job(daily_save, 'cron', hour='11', minute='59') 
-    scheduler.start()
-    scheduler.print_jobs()
+scheduler.add_job(auto_save, 'cron', minute='1,15,30,45')
+scheduler.add_job(daily_save, 'cron', hour='11', minute='59') 
+scheduler.start()
+scheduler.print_jobs()
 
 
 @app.route("/")
