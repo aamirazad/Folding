@@ -129,6 +129,7 @@ def auto_save(day=False):
     # Get list of user's setup to be auto saved
     users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
+        time.sleep(10)
         data = get_user(user[0])
         if data is not None:
             save_user(user[0], data[0]['score'])
@@ -136,6 +137,7 @@ def auto_save(day=False):
 def daily_save():
     users = query_db('SELECT user_id FROM saves', one=True)
     for user in users:
+        time.sleep(10)
         data = get_user(user[0])
         if data is not None:
             # Mark the save as a day save
