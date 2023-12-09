@@ -1,11 +1,8 @@
 import logging
 from flask import Flask, render_template, request, redirect, jsonify
 from helpers import lookup_user, auto_save, get_user, query_db, calculate_daily, daily_save
-from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
-
-scheduler = BackgroundScheduler(daemon=True)
 
 app = Flask(__name__)
 
@@ -15,12 +12,6 @@ app.wsgi_app = ProxyFix(
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
-
-scheduler.add_job(auto_save, 'cron', second='1')
-scheduler.add_job(daily_save, 'cron', hour='11', minute='59') 
-scheduler.start()
-scheduler.print_jobs()
-
 
 @app.route("/")
 def index():
