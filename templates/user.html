@@ -32,43 +32,43 @@
     .then(response => response.json())
     .then(data => {
         formatted = JSON.parse(data);
-        var trace1 = {
-            x: formatted.date,
-            y: formatted.score,
-            type: 'scatter'
-        };
-        var stats = [trace1];
-        let title = q + "'s daily points gain";
-        var layout = {
-            title: title,
-            showlegend: false,
-            paper_bgcolor: 'transparent',
-            plot_bgcolor: 'transparent',
-            font: {
-              color: '#94a3b8',
-              family: 'Nunito Sans'
-            },
-            xaxis: {
-                gridcolor: '#64748b' 
-            },
-            yaxis: {
-                gridcolor: '#64748b' 
-            },
-            modebar: {
-              remove: ['select2d', 'lasso2d', 'autoScale2d'],
-              orientation: 'v'
-            },
-            colorway: ['#3730a3'],
-            margin: {
-                l: 40, // left margin
-                r: 40, // right margin
-                b: 80, // bottom margin
-                t: 80, // top margin
-                pad: 0 // padding
-            }
-        };
+          var trace1 = {
+              x: formatted.date,
+              y: formatted.score,
+              type: 'scatter'
+          };
+          var stats = [trace1];
+          let title = q + "'s daily points gain";
+          var layout = {
+              title: title,
+              showlegend: false,
+              paper_bgcolor: 'transparent',
+              plot_bgcolor: 'transparent',
+              font: {
+                color: '#94a3b8',
+                family: 'Nunito Sans'
+              },
+              xaxis: {
+                  gridcolor: '#64748b' 
+              },
+              yaxis: {
+                  gridcolor: '#64748b' 
+              },
+              modebar: {
+                remove: ['select2d', 'lasso2d', 'autoScale2d'],
+                orientation: 'v'
+              },
+              colorway: ['#3730a3'],
+              margin: {
+                  l: 40, // left margin
+                  r: 40, // right margin
+                  b: 80, // bottom margin
+                  t: 80, // top margin
+                  pad: 0 // padding
+              }
+          };
 
-        Plotly.newPlot('daily_chart', stats, layout, {scrollZoom: true})
+          Plotly.newPlot('daily_chart', stats, layout, {scrollZoom: true})
     });
 
 
@@ -76,7 +76,8 @@
     fetch('/data/user?username=' + encodeURIComponent(q) + '&save=' + encodeURIComponent(save))
     .then(response => response.json())
     .then(data => {
-        formatted = JSON.parse(data);
+      if (data == None) {
+                formatted = JSON.parse(data);
         var trace1 = {
             x: formatted.date,
             y: formatted.score,
@@ -114,6 +115,7 @@
         };
 
         Plotly.newPlot('lifetime_chart', stats, layout, {scrollZoom: true})
+      }
     });
   } 
 

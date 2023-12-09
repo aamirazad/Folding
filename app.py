@@ -36,10 +36,9 @@ def user_total_api():
     save = False
     if request.args.get('save') == 'on':
         save = True
-    logging.debug(save)
     data = lookup_user(username, save)
     if data is None:
-        return None
+        return redirect('/error')
 
     # Format database for graphing
     dates = [date[1] for date in data]  # Extract the date
@@ -51,9 +50,14 @@ def user_total_api():
 def get_user_daily():
     username = request.args.get('username')
     # Get two lists, one with the score differnence, and another with the days that represnt it
-    day_score, day_days = calculate_daily(username)
+    day_score, day_days = calculate_daily(username) if calculate_daily(username) != True else None, None
     if day_score is None:
-        return None
+        return redirect('/error')
     # Send as json
     send = json.dumps({"date": day_days, "score": day_score})
     return jsonify(send)
+
+
+@app.route("/error")
+def error():
+    return render_template("error.html")
