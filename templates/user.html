@@ -76,8 +76,8 @@
     fetch('/data/user?username=' + encodeURIComponent(q) + '&save=' + encodeURIComponent(save))
     .then(response => response.json())
     .then(data => {
-      if (data == None) {
-                formatted = JSON.parse(data);
+      if (data != "None") {
+        formatted = JSON.parse(data);
         var trace1 = {
             x: formatted.date,
             y: formatted.score,
@@ -115,6 +115,9 @@
         };
 
         Plotly.newPlot('lifetime_chart', stats, layout, {scrollZoom: true})
+      }
+      else {
+        window.location.href = "/error"
       }
     });
   } 
