@@ -101,7 +101,7 @@ def lookup_user(user, save=False):
         formatted_database.append(formatted_row)
     return formatted_database
 
-def calculate_daily(user):
+def calculate_production(user):
     # Get user_id and error check
     if user is None:
         return None
