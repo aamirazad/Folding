@@ -1,9 +1,9 @@
-# YA-FAH Stats Website
+# Folding@Home Stats Website
 #### Video Demo:  TODO
 #### Description:
 [![wakatime](https://wakatime.com/badge/user/a74de5a2-6029-42fc-af5a-6c68022b44ae/project/018baf29-6c05-4cd2-b960-a2952007eeba.svg)](https://wakatime.com/badge/user/a74de5a2-6029-42fc-af5a-6c68022b44ae/project/018baf29-6c05-4cd2-b960-a2952007eeba)
 
-The name stands for yet another foldingathome stats website. If you do not know what folding at home (abbreviated as FAH) is, you should checkout their [website](https://foldingathome.org/). TLDR is it is a project to simulate how proteins interact with each other, and cause problems. It works by many people contributing their idle usage to running these simulations to help find cures for diseases. As people contribute to these simulations, they get points to gameify the idea.
+If you do not know what folding at home (abbreviated as FAH) is, you should checkout their [website](https://foldingathome.org/). TLDR is it is a project to simulate how proteins interact with each other, and cause problems. It works by many people contributing their idle usage to running these simulations to help find cures for diseases. As people contribute to these simulations, they get points to gameify the idea.
 
 My website, using FAH's api, creates charts to visualize a specific user's points in ways that I find more useful over the othera (still grea)t FAH stats websites.
 
