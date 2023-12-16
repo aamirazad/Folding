@@ -123,7 +123,8 @@ def calculate_daily(user):
             start_score = None
             daily_stats.append(difference)
             daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
-    return daily_stats, daily_days
+    dictionary = dict(zip(daily_days,daily_stats))
+    return dictionary
 
 def auto_save(day=False):
     # Get list of user's setup to be auto saved

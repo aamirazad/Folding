@@ -50,11 +50,13 @@ def user_total_api():
 def get_user_daily():
     username = request.args.get('username')
     # Get two lists, one with the score differnence, and another with the days that represnt it
-    day_score, day_days = calculate_daily(username) if calculate_daily(username) != True else None, None
-    if day_score is None:
+    days = calculate_daily(username)
+    if days is None:
         return jsonify("None")
     # Send as json
-    send = json.dumps({"date": day_days, "score": day_score})
+    dates = list(days.keys())
+    scores = list(days.values())
+    send = json.dumps({"date": dates, "score": scores})
     return jsonify(send)
 
 
