@@ -120,7 +120,7 @@ def calculate_daily(user):
             start_score = item[2]
         else:
             difference = item[2] - start_score
-            start_score = None
+            start_score = item[2]
             daily_stats.append(difference)
             daily_days.append(item[1].strftime('%Y-%m-%d %H:%M:%S'))
     dictionary = dict(zip(daily_days,daily_stats))
