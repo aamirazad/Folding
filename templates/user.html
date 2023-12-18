@@ -19,6 +19,9 @@
 
   // If the form was submitted
   if (params.has('q')) {
+    if (!q) {
+      window.location.href = "/error"
+    }
     // Unide the auto save button
     document.querySelector('#add-to-save').classList.remove('hidden');
 
