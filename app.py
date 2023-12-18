@@ -22,9 +22,9 @@ def user():
     if request.method == "POST":
         username = request.form.get("auto-save")
         data = get_user(username)
-        user_id = data[0]['id']
-        if user_id is None:
+        if data is None:
             return render_template("error.html")
+        user_id = data[0]['id']
         query_db('REPLACE INTO saves (user_id) VALUES (:user_id)', {'user_id': user_id}, one=True)
         return redirect(f"/user?q={username}")
     else:
